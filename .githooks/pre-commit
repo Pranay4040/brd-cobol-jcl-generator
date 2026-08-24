@@ -1,0 +1,120 @@
+#!/bin/sh
+#
+# pre-commit — structural enforcement of the data rule.
+#
+# PROJECT.md's design philosophy is to guard against failure structurally rather
+# than by asking nicely. This hook applies that principle to the repository
+# itself. .gitignore is a safety net that has already had a hole in it once
+# (unanchored `copybooks/` also matched `samples/copybooks/`); "remember to run
+# git status" is not a control.
+#
+# Enable once per clone -- hooks are not installed by git automatically:
+#
+#     git config core.hooksPath .githooks
+#
+# Bypass is possible with --no-verify. Do not, unless you have read the diff
+# line by line and know exactly why the hook is wrong.
+
+set -u
+
+fail=0
+cred_hits=""
+dsn_hits=""
+staged=$(git diff --cached --name-only --diff-filter=ACMR)
+
+[ -z "$staged" ] && exit 0
+
+err() {
+    printf '  BLOCKED: %s\n' "$1"
+    fail=1
+}
+
+# Files whose CONTENT is scanned for secrets and dataset names, as opposed to
+# files merely checked by path. This hook is excluded from its own content
+# scan: the detection patterns below are literal strings like OPENAI_API_KEY
+# and an sk- regex, so scanning the hook would flag the hook -- blocking the
+# commit that introduces it and every later edit to it.
+scan=''
+for f in $staged; do
+    case "$f" in
+        .githooks/*) : ;;
+        *) scan="$scan $f" ;;
+    esac
+done
+
+# --- 1. Company data paths --------------------------------------------------
+# These are gitignored, but a `git add -f` or a future .gitignore edit could
+# let them through. Check the staged set directly.
+for f in $staged; do
+    case "$f" in
+        config/shop.yml)
+            err "$f -- real shop config. Only shop.sample.yml is committed." ;;
+        copybooks/*)
+            err "$f -- real copybook directory. Synthetic samples go in samples/copybooks/." ;;
+        input/*)
+            err "$f -- real BRD input. Never committed." ;;
+        output/*)
+            err "$f -- generated artefact from real input. Never committed." ;;
+        samples/real/*)
+            err "$f -- real data staged under samples/." ;;
+    esac
+done
+
+# --- 2. Copybooks outside the synthetic sample directory --------------------
+for f in $staged; do
+    case "$f" in
+        samples/copybooks/*.cpy|samples/copybooks/*.CPY)
+            : ;;                                  # synthetic, allowed
+        *.cpy|*.CPY)
+            err "$f -- copybook outside samples/copybooks/. Assumed real." ;;
+    esac
+done
+
+# --- 3. Credential material -------------------------------------------------
+# Model access is Copilot-only. There are no API keys in this project, so any
+# key-shaped string is either a mistake or a guardrail violation.
+[ -n "$scan" ] && cred_hits=$(git diff --cached -U0 -- $scan 2>/dev/null \
+    | grep -n '^+' \
+    | grep -Ei 'ANTHROPIC_API_KEY|OPENAI_API_KEY|AZURE_OPENAI|BEGIN [A-Z ]*PRIVATE KEY|sk-[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}' \
+    || true)
+if [ -n "$cred_hits" ]; then
+    err "credential-shaped string in the staged diff:"
+    printf '%s\n' "$cred_hits" | sed 's/^/      /' | head -5
+fi
+
+# --- 4. Mainframe identifiers that look real --------------------------------
+# Synthetic values use the SYNTH.* HLQ and the SN program prefix (see
+# config/shop.sample.yml). A fully-qualified dataset name with a different HLQ
+# in a committed file is probably a real one that leaked in.
+[ -n "$scan" ] && dsn_hits=$(git diff --cached -U0 -- $scan 2>/dev/null \
+    | grep -n '^+' \
+    | grep -vE '^\+\+\+' \
+    | grep -oE '\b[A-Z][A-Z0-9#@$]{1,7}(\.[A-Z][A-Z0-9#@$]{1,7}){2,}\b' \
+    | grep -vE '^(SYNTH|SAMPLE|TEST|MY|YOUR|HLQ|ACCT)\.' \
+    | sort -u || true)
+if [ -n "$dsn_hits" ]; then
+    printf '  WARNING: dataset-like names not using a synthetic HLQ:\n'
+    printf '%s\n' "$dsn_hits" | sed 's/^/      /' | head -10
+    printf '  If any of these are real, unstage them now.\n'
+fi
+
+# --- 5. CRLF in column-sensitive artefacts ----------------------------------
+# .gitattributes should prevent this. If one slips through, validate_jcl.py
+# line-length checks become unreliable -- a trailing CR counts as a character.
+for f in $staged; do
+    case "$f" in
+        *.jcl|*.JCL|*.cbl|*.CBL|*.cob|*.COB|*.cpy|*.CPY|*.j2)
+            if [ -f "$f" ] && LC_ALL=C grep -qU "$(printf '\r')" "$f" 2>/dev/null; then
+                err "$f -- contains CRLF. Column-sensitive artefacts must be LF."
+            fi ;;
+    esac
+done
+
+if [ "$fail" -ne 0 ]; then
+    printf '\n  Commit refused. See USAGE-POLICY.md section 3 (the data rule).\n'
+    printf '  If a file was committed by mistake previously, deleting it in a\n'
+    printf '  later commit is NOT enough -- it stays in history. Report it.\n\n'
+    exit 1
+fi
+
+exit 0

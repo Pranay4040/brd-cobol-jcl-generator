@@ -1,5 +1,23 @@
 PROPRIETARY INTERNAL-USE LICENCE
 
+  ACTION REQUIRED BEFORE THIS REPOSITORY IS SHARED WITH ANYONE
+  ------------------------------------------------------------------------
+  Two fields below are unresolved and must be settled by a human:
+
+    1. LICENSED ORGANISATION -- shown as [LICENSED ORGANISATION] throughout.
+       Replace with the legal name of the organisation this is licensed to.
+       Until then the terms bind no identified party.
+
+    2. COPYRIGHT HOLDER -- provisionally recorded below as the author. If
+       this software was authored for an employer, or on employer time or
+       equipment, the employment agreement may already assign ownership to
+       that employer, in which case the line below is wrong.
+
+  This is a question for [LICENSED ORGANISATION]'s legal or IP contact,
+  not a drafting detail. Settle it before distributing, before granting
+  repository access, and before this is used on any production workload.
+  ------------------------------------------------------------------------
+
 Copyright (c) 2026 Pranay Pabothu. All rights reserved.
 
 THIS SOFTWARE AND ITS ACCOMPANYING DOCUMENTATION (THE "SOFTWARE") ARE LICENSED
@@ -10,13 +28,13 @@ NOT PUBLIC DOMAIN, AND IS NOT OFFERED UNDER ANY OPEN-SOURCE LICENCE.
 1. GRANT OF LICENCE
 
 Subject to the terms below, the copyright holder grants authorised personnel of
-the licensed organisation a non-exclusive, non-transferable, revocable licence
+[LICENSED ORGANISATION] a non-exclusive, non-transferable, revocable licence
 to use, copy, modify, and internally distribute the Software SOLELY for the
 licensed organisation's own internal business operations, on equipment owned or
 controlled by that organisation.
 
 "Internal business operations" means use by employees, contractors, and agents
-of the licensed organisation, acting in that capacity, for the organisation's
+of [LICENSED ORGANISATION], acting in that capacity, for the organisation's
 own work product.
 
 
@@ -33,7 +51,7 @@ Except as expressly permitted in Section 1, you MAY NOT:
       publishing it to a public repository, package registry, website, or forum;
 
   (d) use the Software to provide services to, or on behalf of, any party other
-      than the licensed organisation;
+      than [LICENSED ORGANISATION];
 
   (e) incorporate the Software into any product or service offered externally,
       whether commercially or free of charge;
@@ -46,9 +64,9 @@ Except as expressly permitted in Section 1, you MAY NOT:
 
 The Software is designed to operate on business requirements documents, COBOL
 copybooks, JCL, and mainframe shop standards, all of which may constitute
-confidential information of the licensed organisation.
+confidential information of [LICENSED ORGANISATION].
 
-  (a) No confidential or proprietary data of the licensed organisation may be
+  (a) No confidential or proprietary data of [LICENSED ORGANISATION] may be
       committed to this repository. The repository's .gitignore excludes
       config/shop.yml, copybooks/, input/, and output/ for this reason.
 

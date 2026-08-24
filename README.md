@@ -125,50 +125,78 @@ These shape the architecture. Read them before proposing anything.
 
 ## Repository layout
 
+**`✓` exists · `·` planned, not built yet.** The tree below is the target layout
+from `PROJECT.md` §5. Only the scaffold is in place today; everything marked `·`
+is created by a numbered step in [BUILD_PLAN.md](BUILD_PLAN.md).
+
 ```
 .
+├── ✓ .gitattributes                 # LF discipline for column-sensitive files
+├── ✓ .gitignore                     # company-data exclusions, root-anchored
+├── ✓ .githooks/
+│   └── ✓ pre-commit                 # enforces the data rule — see setup below
+│
 ├── .github/
-│   ├── copilot-instructions.md      # shop standards, always-on context
+│   ├── · copilot-instructions.md    # shop standards, always-on   [Step 1.5]
 │   ├── agents/
-│   │   ├── brd-analyst.agent.md     # stage 2: BRD → spec.json
-│   │   ├── cobol-writer.agent.md    # stage 6c: PROCEDURE DIVISION
-│   │   └── jcl-writer.agent.md      # supervises stage 6a
+│   │   ├── · brd-analyst.agent.md   # stage 2: BRD → spec.json    [Step 1.6]
+│   │   ├── · cobol-writer.agent.md  # stage 6c: PROCEDURE DIV     [Step 2.4]
+│   │   └── · jcl-writer.agent.md    # supervises stage 6a
 │   └── skills/
-│       └── shop-standards/SKILL.md  # naming rules, conventions
+│       └── · shop-standards/SKILL.md # naming rules, conventions
 │
 ├── config/
-│   ├── shop.yml                     # GITIGNORED — real values
-│   └── shop.sample.yml              # committed — synthetic values
+│   ├── · shop.yml                   # GITIGNORED — real values, you create it
+│   └── ✓ shop.sample.yml            # committed — synthetic values
 │
-├── copybooks/                       # GITIGNORED — real copybooks
-├── input/                           # GITIGNORED — real BRDs
-├── output/                          # GITIGNORED — generated artifacts
+├── · copybooks/                     # GITIGNORED — real copybooks
+├── · input/                         # GITIGNORED — real BRDs
+├── · output/                        # GITIGNORED — generated artifacts
 │
 ├── samples/                         # committed — synthetic test data
-│   ├── copybooks/
-│   ├── brds/
-│   └── expected/                    # known-good outputs for regression
+│   ├── · copybooks/SNCUST.cpy       #                             [Step 0.2]
+│   ├── · brds/sample-brd-01.md      #                             [Step 0.2]
+│   └── · expected/                  # known-good outputs          [Step 0.3]
 │
 ├── templates/
-│   ├── batch-job.jcl.j2
-│   └── cobol-skeleton.cbl.j2
+│   ├── · batch-job.jcl.j2           #                             [Step 1.4]
+│   └── · cobol-skeleton.cbl.j2      #                             [Step 2.2]
 │
 ├── schema/
-│   └── spec.schema.json
+│   └── · spec.schema.json           #                             [Step 1.2]
 │
 ├── scripts/
-│   ├── validate_jcl.py
-│   ├── validate_spec.py
-│   ├── resolve_copybook.py
-│   ├── render_jcl.py
-│   └── render_cobol_skeleton.py
+│   ├── · validate_jcl.py            #                             [Step 1.1]
+│   ├── · validate_spec.py           #                             [Step 1.2]
+│   ├── · render_jcl.py              #                             [Step 1.4]
+│   ├── · resolve_copybook.py        #                             [Step 2.1]
+│   └── · render_cobol_skeleton.py   #                             [Step 2.2]
 │
-└── tests/
+└── tests/                           # · one test module per script
 ```
 
 Directories marked GITIGNORED exist locally on each machine and are never
 committed. The committed tree carries `.gitkeep` files where a directory is
 still empty.
+
+---
+
+## Setting up a clone
+
+```bash
+cp config/shop.sample.yml config/shop.yml
+git config core.hooksPath .githooks
+```
+
+The second line is not optional. Git does not install hooks automatically, so
+each clone — personal laptop and office laptop alike — must enable them once.
+
+The `pre-commit` hook is the structural half of the data rule. It refuses any
+commit that stages `config/shop.yml`, anything under `copybooks/`, `input/`, or
+`output/`, any `.cpy` outside `samples/copybooks/`, or a credential-shaped
+string; it warns on dataset names that don't use a synthetic HLQ, and blocks
+CRLF in column-sensitive artefacts. `.gitignore` is the other half — and it has
+already had one hole in it, which is precisely why there are two layers.
 
 ---
 

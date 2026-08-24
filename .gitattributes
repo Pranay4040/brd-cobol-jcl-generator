@@ -1,0 +1,55 @@
+# ---------------------------------------------------------------------------
+# Line-ending discipline.
+#
+# This project generates column-sensitive artefacts: COBOL with Area A at
+# column 8, Area B at column 12, and nothing past column 72; JCL confined to
+# columns 1-71 with continuation cards. Source also moves between a Windows
+# personal laptop, a Windows office laptop, and (via upload) z/OS.
+#
+# A stray CR is a real hazard here, not a cosmetic one: scripts/validate_jcl.py
+# measures line length, and a trailing CR counts as a character. A legitimate
+# 71-character JCL line would read as 72 and fail, or a genuinely overlong line
+# would pass, depending on how the file was read.
+#
+# So: everything is stored LF in the repository AND checked out LF in the
+# working tree. Nothing is left to core.autocrlf, which varies per machine.
+# Upload tooling (Zowe CLI, IND$FILE, FTP) handles the EBCDIC/RECFM conversion
+# at transfer time; that is the correct place for it, not the working tree.
+# ---------------------------------------------------------------------------
+
+* text=auto eol=lf
+
+# --- Mainframe artefacts: LF, explicitly. Never CRLF, on any machine. -------
+*.cbl    text eol=lf
+*.CBL    text eol=lf
+*.cob    text eol=lf
+*.COB    text eol=lf
+*.cpy    text eol=lf
+*.CPY    text eol=lf
+*.jcl    text eol=lf
+*.JCL    text eol=lf
+*.prc    text eol=lf
+*.PRC    text eol=lf
+
+# --- Templates that render into the artefacts above -------------------------
+*.j2     text eol=lf
+
+# --- Tooling and config -----------------------------------------------------
+*.py     text eol=lf diff=python
+*.yml    text eol=lf
+*.yaml   text eol=lf
+*.json   text eol=lf
+*.md     text eol=lf
+*.sh     text eol=lf
+.gitattributes text eol=lf
+.gitignore     text eol=lf
+.githooks/*    text eol=lf
+
+# --- Binary: never touch ----------------------------------------------------
+*.png    binary
+*.jpg    binary
+*.gif    binary
+*.pdf    binary
+*.zip    binary
+*.xlsx   binary
+*.docx   binary

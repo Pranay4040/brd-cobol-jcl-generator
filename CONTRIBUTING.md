@@ -80,7 +80,20 @@ partial implementation with a `TODO` and call the step done.
 
 ## Commit hygiene
 
-Before every commit:
+**Enable the hooks once per clone,** on every machine:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+Git does not install hooks for you, and a clone without this line has only
+`.gitignore` standing between it and a committed copybook. The `pre-commit` hook
+blocks staged company data, copybooks outside `samples/`, credential-shaped
+strings, and CRLF in column-sensitive artefacts. `--no-verify` bypasses it; if
+you reach for that flag, read the diff line by line first and be certain the
+hook is wrong.
+
+The hook is a backstop, not a substitute for looking. Before every commit:
 
 ```bash
 git status
