@@ -1,0 +1,64 @@
+# ---------------------------------------------------------------------------
+# COMPANY DATA — never commit. This file is written before the directories it
+# protects exist, deliberately. It is far easier to never commit shop data than
+# to scrub it out of history later.
+#
+# NOTE ON ANCHORING: the company-data paths below carry a leading slash so they
+# match ONLY at the repository root. Unanchored (`copybooks/`), they would also
+# match `samples/copybooks/`, which holds committed synthetic test data.
+# See PROJECT.md section 5.
+# ---------------------------------------------------------------------------
+/config/shop.yml
+/copybooks/
+/input/
+/output/
+
+# Real copybooks, wherever they land.
+*.cpy
+*.CPY
+
+# ...except the synthetic ones under samples/, committed on purpose. Anything
+# placed there must be invented for this project. If a sample file starts to
+# resemble a real record layout, replace it.
+!samples/copybooks/*.cpy
+!samples/copybooks/*.CPY
+
+# Real BRDs and the golden set live only on the office machine
+/samples/real/
+
+# ---------------------------------------------------------------------------
+# Credentials — this project uses GitHub Copilot only. There are no API keys.
+# These entries exist so an accidental key file can never be committed.
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+secrets/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+build/
+dist/
+
+# Tooling
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Editors / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini

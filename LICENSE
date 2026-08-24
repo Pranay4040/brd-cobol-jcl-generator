@@ -1,0 +1,100 @@
+PROPRIETARY INTERNAL-USE LICENCE
+
+Copyright (c) 2026 Pranay Pabothu. All rights reserved.
+
+THIS SOFTWARE AND ITS ACCOMPANYING DOCUMENTATION (THE "SOFTWARE") ARE LICENSED
+FOR INTERNAL ENTERPRISE AND OFFICE USE ONLY. THE SOFTWARE IS NOT OPEN SOURCE,
+NOT PUBLIC DOMAIN, AND IS NOT OFFERED UNDER ANY OPEN-SOURCE LICENCE.
+
+
+1. GRANT OF LICENCE
+
+Subject to the terms below, the copyright holder grants authorised personnel of
+the licensed organisation a non-exclusive, non-transferable, revocable licence
+to use, copy, modify, and internally distribute the Software SOLELY for the
+licensed organisation's own internal business operations, on equipment owned or
+controlled by that organisation.
+
+"Internal business operations" means use by employees, contractors, and agents
+of the licensed organisation, acting in that capacity, for the organisation's
+own work product.
+
+
+2. RESTRICTIONS
+
+Except as expressly permitted in Section 1, you MAY NOT:
+
+  (a) use the Software for personal, hobby, academic, or non-work purposes;
+
+  (b) distribute, publish, sublicense, sell, rent, lease, or otherwise transfer
+      the Software or any derivative of it to any third party;
+
+  (c) make the Software or any derivative of it publicly available, including by
+      publishing it to a public repository, package registry, website, or forum;
+
+  (d) use the Software to provide services to, or on behalf of, any party other
+      than the licensed organisation;
+
+  (e) incorporate the Software into any product or service offered externally,
+      whether commercially or free of charge;
+
+  (f) remove, obscure, or alter this licence, the copyright notice, or the
+      internal-use notices in the accompanying documentation.
+
+
+3. CONFIDENTIALITY AND DATA HANDLING
+
+The Software is designed to operate on business requirements documents, COBOL
+copybooks, JCL, and mainframe shop standards, all of which may constitute
+confidential information of the licensed organisation.
+
+  (a) No confidential or proprietary data of the licensed organisation may be
+      committed to this repository. The repository's .gitignore excludes
+      config/shop.yml, copybooks/, input/, and output/ for this reason.
+
+  (b) Code may move from a personal development machine to an office machine.
+      Organisation data must never move in the opposite direction.
+
+  (c) Any person granted access to the Software remains bound by the licensed
+      organisation's own confidentiality, information-security, and acceptable-
+      use policies. Where those policies are stricter than this licence, they
+      prevail.
+
+
+4. AI-GENERATED OUTPUT
+
+The Software uses large language models to generate COBOL and specification
+artefacts. Generated output is DRAFT MATERIAL requiring human review before any
+use in a production environment. The copyright holder makes no representation
+that generated code is correct, complete, compilable, or fit for any purpose.
+The human approval gate described in the documentation must not be removed or
+bypassed.
+
+
+5. NO WARRANTY
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
+
+
+6. LIMITATION OF LIABILITY
+
+IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING
+FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE. THIS INCLUDES, WITHOUT LIMITATION, ANY LOSS ARISING FROM THE
+EXECUTION OF GENERATED COBOL PROGRAMS OR JCL JOBS IN ANY ENVIRONMENT.
+
+
+7. TERMINATION
+
+This licence terminates automatically and immediately upon any breach of its
+terms. Upon termination you must cease all use of the Software and destroy all
+copies in your possession or control.
+
+
+8. RESERVATION OF RIGHTS
+
+All rights not expressly granted in this licence are reserved by the copyright
+holder.

@@ -1,0 +1,44 @@
+# ---------------------------------------------------------------------------
+# Shop configuration — SAMPLE / SYNTHETIC VALUES
+#
+# Copy this file to config/shop.yml and fill in the real values for the machine
+# you are on:
+#
+#     cp config/shop.sample.yml config/shop.yml
+#
+# config/shop.yml is GITIGNORED and must never be committed. The personal laptop
+# holds synthetic values; the office laptop holds the real ones at the same
+# path. Switching machines requires zero code changes.
+#
+# Nothing shop-specific is ever hardcoded in scripts or templates. If a value is
+# missing here, the pipeline fails loudly rather than guessing a default.
+# ---------------------------------------------------------------------------
+
+# Job card values used when rendering batch JCL.
+job_card:
+  account: "{{ACCOUNT}}"
+  class: A
+  msgclass: X
+  notify: "&SYSUID"
+
+# Dataset conventions.
+datasets:
+  hlq: SYNTH.TEST          # high-level qualifier for generated datasets
+  work_unit: SYSDA         # UNIT= for temporary/work datasets
+
+# Site-standard cataloged procedures.
+procs:
+  compile: SYNTHCOB
+  link: SYNTHLNK
+
+# Naming rules enforced by scripts/validate_jcl.py.
+naming:
+  program_prefix: SN
+  max_program_name_length: 8
+
+# COBOL source layout rules enforced by the skeleton generator and validators.
+standards:
+  indent_area_a: 8         # Area A starts at column 8
+  indent_area_b: 12        # Area B starts at column 12
+  max_line_length: 72      # nothing past column 72
+  sequence_numbers: false  # columns 1-6 left blank
